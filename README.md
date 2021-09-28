@@ -43,7 +43,9 @@ go to DLTV/config.json and edit following:
     
 
     
-# Commands
+# Command Usage:
+Setup Reaction role: (prefix)rr Role ID Message ID Emoji
+
 
 
 # Discord Setup:
