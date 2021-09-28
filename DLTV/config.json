@@ -1,0 +1,16 @@
+{
+  "Bot": {
+    "token": "token not set",
+    "guild": 0,
+    "prefix": "?"
+  },
+  "Channel": {
+    "join_channel": 0,
+    "stats_channel": 0,
+    "log_channel": 0,
+    "report_channel": 0
+  },
+  "Settings": {
+    "join_message": true
+  }
+}
