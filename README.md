@@ -2,8 +2,8 @@
 
 
 
- Hi! I'm The All in One open Source Discord Bot **Dark Legend**.
-Feel free to join our discord if you got trouble with setting up your own Bot.
+ Hi! I'm The all in one open Source Discord Bot **Dark Legend**.
+Feel free to join our discord if you got trouble setting up your own Bot.
 [🅳🅰🆁🅺🅻🅴🅶🅴🅽🅳🆂🆃🆅](https://discord.gg/n3T3GrrQKg)
 
 # Features:
@@ -23,26 +23,25 @@ Feel free to join our discord if you got trouble with setting up your own Bot.
 ###### Warn Users.
 
 # Installation:
-Install Instructions 
+Download the Package and extract. 
 
 ## Requirements:
+Install following Python Moules:    
+-    python -m pip install discord
+-    python -m pip install aiofiles
 
-+ Pyth3on   Packages:  
-`python -m pip install discord`
-`python -m pip install aiofiles`
-
-## first start:
 
 ## Setup Config File:
-locate config file at :"`Installation/DLTV`" and open it.
+go to DLTV/config.json and edit following:
+- (prefix) the Bot Prefix to Call
+- replace "token not set" with your token from discord.
+- replace "guild" with the Id of the Guild.
+- replace "join_channel" with the Id of the Channel where you want the Join/Leave message to be send.   
+- replace "stats_channel" with the Id of the Channel where you want the Stats message to be send. 
+- replace "report_channel" with the Id of the Channel where you want the Report message to be send. 
+
     
-    "prefix" : to wake the Bot
-    replace "token not set" with your token from discord.
-    set "join_message" = 1 to enable join and leave messages:
-    requires "join_channel" to be set to channel id.
-    set stats_channel to the channel id where you want the message to be shown.
-    
-    
+
     
 # Commands
 
