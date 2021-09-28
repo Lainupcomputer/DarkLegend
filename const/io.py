@@ -12,8 +12,6 @@ def read():  # Read Json File
 
 
 def get(cfg, var):  # Get Data from Json
-    if cfg is None:
-        cfg = "bot_config"
     config = read()
     data = config[str(cfg)][var]
     return data
