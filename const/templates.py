@@ -63,3 +63,13 @@ def member_remove_embed(user, update_time):
     embed.set_thumbnail(url="https://server-dltv.de/dltv.png")
     embed.add_field(name="User:", value=user.mention, inline=True)
     return embed
+
+
+def report_embed(ctx, reason, update_time):
+    embed = discord.Embed(title="Willkommen auf 🅳🅰🆁🅺🅻🅴🅶🅴🅽🅳🆂🆃🆅",
+                          colour=discord.Colour(0x35aa0a), url="http://darklegendstv.de/",
+                          description="Server Stats: 🅳🅰🆁🅺🅻🅴🅶🅴🅽🅳🆂🆃🆅",
+                          timestamp=datetime.datetime.utcfromtimestamp(update_time))
+    embed.set_thumbnail(url="https://server-dltv.de/dltv.png")
+    embed.add_field(name="User:", value=user.mention, inline=True)
+    return embed
