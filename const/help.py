@@ -1,7 +1,5 @@
 import discord
-import io
 
-prefix = io.get("Bot", "prefix")
 
 buttons = ["🔎", "🎲", "💰", "🎶", "⚙", "🗑"]
 
