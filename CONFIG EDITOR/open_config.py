@@ -9,13 +9,13 @@ import json
 
 
 def config_laden():
-    with open("config.json", "r") as f:
+    with open("../DLTV/config.json", "r") as f:
         config = json.load(f)
     return config
 
 
 def save(file):
-    with open("config.json", "w") as f:
+    with open("../DLTV/config.json", "w") as f:
         json.dump(file, f, indent=2)
 
 
@@ -26,6 +26,8 @@ def channel():
     f[str(cfg)]["join_channel"] = 0
     f[str(cfg)]["stats_channel"] = 0
     f[str(cfg)]["log_channel"] = 0
+    f[str(cfg)]["report_channel"] = 0
+
     save(f)
 
 
