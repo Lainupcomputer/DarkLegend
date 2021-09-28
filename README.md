@@ -27,8 +27,9 @@ Install Instructions
 
 ## Requirements:
 
-+ Python   Packages:  
++ Pyth3on   Packages:  
 `python -m pip install discord`
+`python -m pip install aiofiles`
 
 ## first start:
 
