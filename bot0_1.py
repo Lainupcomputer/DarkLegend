@@ -74,7 +74,7 @@ async def on_raw_reaction_add(payload):
         if msg_id == payload.message_id and emoji == str(payload.emoji.name.encode("utf-8")):
             await payload.member.add_roles(bot.get_guild(payload.guild_id).get_role(role_id))
             return
-    if payload.member.id != bot.user.id and str(payload.emoji) == u"\U0001F3AB":
+    if payload.member.id != bot.user.id and str(payload.emoji) == u"\U0001F3AB": # Ticket System
         msg_id, channel_id, category_id = bot.ticket_configs[payload.guild_id]
 
         if payload.message_id == msg_id:
@@ -143,17 +143,17 @@ async def on_raw_reaction_remove(payload):
 @bot.event  # member join
 async def on_member_join(user):
     if io.get(cfg="Settings", var="join_message"):  # Check if enabled
-        embed = templates.welcome_channel_embed(user, update_time=time.time())
-        await bot.get_channel(io.get(cfg="Channel", var="join_channel")).send(embed=embed)
-        embed = templates.welcome_dm_embed(user, update_time=time.time())
-        await user.send(embed=embed)
+        await user.send(embed=templates.welcome_dm_embed(user, update_time=time.time()))
+        await bot.get_channel(io.get(cfg="Channel", var="join_channel")).send(embed=templates.welcome_channel_embed(user,
+                                                                                                                    update_time=time.time()))
+
 
 
 @bot.event
 async def on_member_remove(member):
     if io.get(cfg="Settings", var="join_message"):  # Check if enabled
-        embed = templates.member_remove_embed(user=member, update_time=time.time())
-        await bot.get_channel(io.get(cfg="Channel", var="join_channel")).send(embed=embed)
+        await bot.get_channel(io.get(cfg="Channel", var="join_channel")).send(embed=templates.member_remove_embed(user=member,
+                                                                                                                  update_time=time.time()))
 
 
 @bot.command()
@@ -263,7 +263,7 @@ async def warn(ctx, member: discord.Member = None, *, reason=None):
 
     async with aiofiles.open("DLTV/warnings", mode="a") as file:
         await file.write(f"{member.id} {ctx.author.id} {reason}\n")
-
+    await ctx.channel.purge(limit=1, check=checks.is_not_pinned)
     await ctx.send(embed=templates.warn_embed(update_time=time.time(), member=member, first_warning=first_warning,
                                               count=bot.warnings[ctx.guild.id][member.id][0]))
 
@@ -286,6 +286,16 @@ async def showwarn(ctx, member: discord.Member = None):
     except KeyError:  # no warnings
         embed = discord.Embed(title=f" {member.name} is clean AF.", description="", colour=discord.Colour.red())
         await ctx.send(embed=embed)
+
+
+@bot.command()  # Report
+async def report(ctx, reason=None):
+    if reason is None:
+        return await ctx.send("Reason required.")
+    embed = templates.report_embed(ctx, reason=reason, update_time=time.time())
+    await bot.get_channel(io.get(cfg="Channel", var="report_channel")).send(embed=embed)
+    await ctx.send("Your report has been sent.")
+    await ctx.channel.purge(limit=2, check=checks.is_not_pinned)
 
 
 async def status_task():  # Display Discord Status
