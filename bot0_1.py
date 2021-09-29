@@ -165,6 +165,8 @@ async def umfrage(ctx,*, topic ):
     msg = await ctx.send(embed=templates.umfrage_embed(update_time=time.time(),topic=topic))
     await msg.add_reaction("👍")
     await msg.add_reaction("👎")
+
+
 @bot.command()
 async def hilfe(ctx):
     await ctx.channel.purge(limit=1)
