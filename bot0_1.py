@@ -74,6 +74,9 @@ async def on_raw_reaction_add(payload):
         if msg_id == payload.message_id and emoji == str(payload.emoji.name.encode("utf-8")):
             await payload.member.add_roles(bot.get_guild(payload.guild_id).get_role(role_id))
             return
+    if payload.emoji == "👌":
+        pass
+
     if payload.member.id != bot.user.id and str(payload.emoji) == u"\U0001F3AB":  # Ticket System
         msg_id, channel_id, category_id = bot.ticket_configs[payload.guild_id]
 
@@ -89,7 +92,8 @@ async def on_raw_reaction_add(payload):
                                                                 topic=f"ticket for {payload.member.display_name}.",
                                                                 permission_synced=True)
 
-            await bot.get_channel(io.get(cfg="Channel", var="support_channel")).send(embed=templates.support_embed(payload))
+            await bot.get_channel(io.get(cfg="Channel", var="support_channel")).send(embed=templates.support_embed(payload,
+                                                                                                                   update_time=time.time()))
 
             await ticket_channel.set_permissions(payload.member, read_messages=True, send_messages=True)
             message = await channel.fetch_message(msg_id)
@@ -130,7 +134,7 @@ async def configure_ticket(ctx, msg: discord.Message = None, category: discord.C
     await msg.add_reaction(u"\U0001F3AB")
     await ctx.channel.send("OK")
     await asyncio.sleep(1)
-    await ctx.channel.purge(limit=1, check=checks.is_not_pinned)
+    await ctx.channel.purge(limit=2, check=checks.is_not_pinned)
 
 
 @bot.event  # reaction remove
@@ -145,17 +149,20 @@ async def on_raw_reaction_remove(payload):
 @bot.event  # member join
 async def on_member_join(user):
     if io.get(cfg="Settings", var="join_message"):  # Check if enabled
-        await user.send(embed=templates.welcome_dm_embed(user, update_time=time.time()))
-        await bot.get_channel(io.get(cfg="Channel", var="join_channel")).send(embed=templates.welcome_channel_embed(user,
-                                                                                                                    update_time=time.time()))
+        msg = await user.send(embed=templates.welcome_dm_embed(update_time=time.time()))
+        await msg.add_reaction("👌")
 
+        await bot.get_channel(io.get(cfg="Channel",
+                                     var="join_channel")).send(embed=templates.welcome_channel_embed(user,
+                                     update_time=time.time()))
 
 
 @bot.event
 async def on_member_remove(member):
     if io.get(cfg="Settings", var="join_message"):  # Check if enabled
-        await bot.get_channel(io.get(cfg="Channel", var="join_channel")).send(embed=templates.member_remove_embed(user=member,
-                                                                                                                  update_time=time.time()))
+        await bot.get_channel(io.get(cfg="Channel",
+                                     var="join_channel")).send(embed=templates.member_remove_embed(user=member,
+                                     update_time=time.time()))
 
 
 @bot.command()
@@ -297,6 +304,7 @@ async def report(ctx, reason=None):
     embed = templates.report_embed(ctx, reason=reason, update_time=time.time())
     await bot.get_channel(io.get(cfg="Channel", var="report_channel")).send(embed=embed)
     await ctx.send("Your report has been sent.")
+    await asyncio.sleep(2)
     await ctx.channel.purge(limit=2, check=checks.is_not_pinned)
 
 
@@ -310,14 +318,11 @@ async def status_task():  # Display Discord Status
     while True:
         await bot.change_presence(activity=discord.Game('OK'), status=discord.Status.online)
         await asyncio.sleep(20)
-
-
-
         new = templates.stats_embed(update_time=time.time())
         await msg.edit(embed=new)
         await bot.change_presence(activity=discord.Game('UPDATE'), status=discord.Status.online)
         await asyncio.sleep(10)
-        print("update")
+
 
 
 bot.run(io.get(cfg="Bot", var="token"))
