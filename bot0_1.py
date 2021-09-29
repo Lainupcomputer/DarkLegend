@@ -74,8 +74,6 @@ async def on_raw_reaction_add(payload):
         if msg_id == payload.message_id and emoji == str(payload.emoji.name.encode("utf-8")):
             await payload.member.add_roles(bot.get_guild(payload.guild_id).get_role(role_id))
             return
-    if payload.emoji == "👌":
-        pass
 
     if payload.member.id != bot.user.id and str(payload.emoji) == u"\U0001F3AB":  # Ticket System
         msg_id, channel_id, category_id = bot.ticket_configs[payload.guild_id]
@@ -149,9 +147,7 @@ async def on_raw_reaction_remove(payload):
 @bot.event  # member join
 async def on_member_join(user):
     if io.get(cfg="Settings", var="join_message"):  # Check if enabled
-        msg = await user.send(embed=templates.welcome_dm_embed(update_time=time.time()))
-        await msg.add_reaction("👌")
-
+        await user.send(embed=templates.welcome_dm_embed(update_time=time.time()))
         await bot.get_channel(io.get(cfg="Channel",
                                      var="join_channel")).send(embed=templates.welcome_channel_embed(user,
                                      update_time=time.time()))
@@ -164,7 +160,11 @@ async def on_member_remove(member):
                                      var="join_channel")).send(embed=templates.member_remove_embed(user=member,
                                      update_time=time.time()))
 
-
+@bot.command()
+async def umfrage(ctx,*, topic ):
+    msg = await ctx.send(embed=templates.umfrage_embed(update_time=time.time(),topic=topic))
+    await msg.add_reaction("👍")
+    await msg.add_reaction("👎")
 @bot.command()
 async def hilfe(ctx):
     await ctx.channel.purge(limit=1)

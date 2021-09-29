@@ -99,3 +99,13 @@ def support_embed(payload, update_time):
                           description=f"{payload.member.mention} requested Support.",
                           timestamp=datetime.datetime.utcfromtimestamp(update_time))
     return embed
+
+
+def umfrage_embed(update_time, topic):
+    embed = discord.Embed(title="Umfrage:",
+                          colour=discord.Colour(0x35aa0a),
+                          description=f"{topic}",
+                          timestamp=datetime.datetime.utcfromtimestamp(update_time))
+    return embed
+
+
