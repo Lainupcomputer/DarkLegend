@@ -74,7 +74,7 @@ async def on_raw_reaction_add(payload):
         if msg_id == payload.message_id and emoji == str(payload.emoji.name.encode("utf-8")):
             await payload.member.add_roles(bot.get_guild(payload.guild_id).get_role(role_id))
             return
-    if payload.member.id != bot.user.id and str(payload.emoji) == u"\U0001F3AB": # Ticket System
+    if payload.member.id != bot.user.id and str(payload.emoji) == u"\U0001F3AB":  # Ticket System
         msg_id, channel_id, category_id = bot.ticket_configs[payload.guild_id]
 
         if payload.message_id == msg_id:
@@ -88,6 +88,8 @@ async def on_raw_reaction_add(payload):
             ticket_channel = await category.create_text_channel(f"{payload.member.display_name}´s Ticket",
                                                                 topic=f"ticket for {payload.member.display_name}.",
                                                                 permission_synced=True)
+
+            await bot.get_channel(io.get(cfg="Channel", var="support_channel")).send(embed=templates.support_embed(payload))
 
             await ticket_channel.set_permissions(payload.member, read_messages=True, send_messages=True)
             message = await channel.fetch_message(msg_id)
