@@ -9,13 +9,13 @@ import json
 
 
 def config_laden():
-    with open("../DLTV/config.json", "r") as f:
+    with open("config.json", "r") as f:
         config = json.load(f)
     return config
 
 
 def save(file):
-    with open("/config.json", "w") as f:
+    with open("config.json", "w") as f:
         json.dump(file, f, indent=2)
 
 
