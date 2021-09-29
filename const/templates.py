@@ -73,3 +73,10 @@ def report_embed(ctx, reason, update_time):
     embed.set_thumbnail(url="https://server-dltv.de/dltv.png")
     embed.add_field(name="User:", value=user.mention, inline=True)
     return embed
+
+
+def support_embed(payload):
+    embed = discord.Embed(title="Support:",
+                          colour=discord.Colour(0x35aa0a),
+                          description=f"{payload.member.mention} requested Support.")
+    return embed
