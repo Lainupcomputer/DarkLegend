@@ -15,7 +15,7 @@ def config_laden():
 
 
 def save(file):
-    with open("../DLTV/config.json", "w") as f:
+    with open("/config.json", "w") as f:
         json.dump(file, f, indent=2)
 
 
@@ -27,6 +27,7 @@ def channel():
     f[str(cfg)]["stats_channel"] = 0
     f[str(cfg)]["log_channel"] = 0
     f[str(cfg)]["report_channel"] = 0
+    f[str(cfg)]["support_channel"] = 0
 
     save(f)
 
