@@ -28,6 +28,7 @@ def channel():
     f[str(cfg)]["log_channel"] = 0
     f[str(cfg)]["report_channel"] = 0
     f[str(cfg)]["support_channel"] = 0
+    f[str(cfg)]["store_channel"] = 0
 
     save(f)
 
