@@ -2,13 +2,7 @@ import discord
 import datetime
 
 
-def stats_embed(update_time):
-
-    #  Generate Embed
-    online = None
-    offline = None
-    total_channel = None
-    boost_level = None
+def stats_embed(update_time, boost_level, total_channel, offline, online):
 
     embed = discord.Embed(title="Server Stats",
                           colour=discord.Colour(0x35aa0a), url="http://darklegendstv.de/",
@@ -108,4 +102,15 @@ def umfrage_embed(update_time, topic):
                           timestamp=datetime.datetime.utcfromtimestamp(update_time))
     return embed
 
+
+def user_embed(ctx, update_time, member):
+    embed = discord.Embed(title=member.name, description=member.mention, color=discord.Colour.green(),
+                          timestamp=datetime.datetime.utcfromtimestamp(update_time))
+    embed.add_field(name="ID", value=member.id, inline=True)
+    embed.add_field(name="Beigetreten", value=member.joined_at, inline=True)
+    embed.add_field(name="Höchste Rolle", value=member.top_role, inline=True)
+    embed.add_field(name="Rollen", value=member.roles, inline=True)
+    embed.set_thumbnail(url=member.avatar_url)
+    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Angefordert: {ctx.author.name}")
+    return embed
 
