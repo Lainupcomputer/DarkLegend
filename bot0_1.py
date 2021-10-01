@@ -161,7 +161,7 @@ async def on_member_remove(member):
                                      update_time=time.time()))
 
 @bot.command()
-async def umfrage(ctx,*, topic ):
+async def umfrage(ctx, *, topic):
     msg = await ctx.send(embed=templates.umfrage_embed(update_time=time.time(),topic=topic))
     await msg.add_reaction("👍")
     await msg.add_reaction("👎")
@@ -310,6 +310,30 @@ async def report(ctx, reason=None):
     await ctx.channel.purge(limit=2, check=checks.is_not_pinned)
 
 
+@bot.command()
+@commands.has_permissions(kick_members=True)
+async def kick(ctx, member: discord.Member, *, reason="Du wurdest Geckickt!"):
+    await member.send("Du wurdest gekickt. Weil:"+ reason)
+    await bot.get_channel(io.get(cfg="Channel",
+                                 var="join_channel")).send(f"{member.mention} **Wurde von {ctx.author.mention} Gekickt**")
+    await member.kick(reason=reason)
+
+
+@bot.command()
+@commands.has_permissions(ban_members = True)
+async def ban(ctx, member : discord.Member, *, reason="Du Wurdest Gebannt!"):
+    await member.send("Du wurdest gebannt. Weil:"+reason)
+    await bot.get_channel(io.get(cfg="Channel",
+                                 var="join_channel")).send(f"{member.mention} **Wurde von {ctx.author.mention} Gebannt!**")
+    await member.ban(reason=reason)
+
+
+@bot.command()
+@commands.has_permissions(kick_members=True)
+async def info(ctx, member: discord.Member):
+    await ctx.send(embed=templates.user_embed(ctx=ctx, member=member, update_time=time.time()))
+
+
 async def status_task():  # Display Discord Status
     embed = discord.Embed(title="Server Stats",
                           colour=discord.Colour(0x35aa0a),
@@ -318,13 +342,21 @@ async def status_task():  # Display Discord Status
     msg = await bot.get_channel(io.get(cfg="Channel", var="stats_channel")).send(embed=embed)
 
     while True:
+        guild = bot.get_guild(io.get(cfg="Bot", var="guild"))
+        boost_lvl = guild.premium_tier
+        channel = len(guild.text_channels) + len(guild.voice_channels)
+        members = guild.members
+        print(members)
+        for member in members:
+            print(member.raw_status)
+
+
         await bot.change_presence(activity=discord.Game('OK'), status=discord.Status.online)
         await asyncio.sleep(20)
-        new = templates.stats_embed(update_time=time.time())
+        new = templates.stats_embed(update_time=time.time(), boost_level=boost_lvl, total_channel=channel, offline="none", online="none")
         await msg.edit(embed=new)
         await bot.change_presence(activity=discord.Game('UPDATE'), status=discord.Status.online)
         await asyncio.sleep(10)
-
 
 
 bot.run(io.get(cfg="Bot", var="token"))
