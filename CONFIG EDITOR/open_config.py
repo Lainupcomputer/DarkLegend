@@ -51,6 +51,15 @@ def settings():
     save(f)
 
 
+def roles():
+    cfg = "roles"
+    f = config_laden()
+    f[str(cfg)] = {}
+    f[str(cfg)]["user_role"] = 0
+    save(f)
+
+
 essential()
 channel()
 settings()
+roles()
