@@ -345,15 +345,10 @@ async def status_task():  # Display Discord Status
         guild = bot.get_guild(io.get(cfg="Bot", var="guild"))
         boost_lvl = guild.premium_tier
         channel = len(guild.text_channels) + len(guild.voice_channels)
-        members = guild.members
-        print(members)
-        for member in members:
-            print(member.raw_status)
-
-
+        members = len(guild.members)
         await bot.change_presence(activity=discord.Game('OK'), status=discord.Status.online)
         await asyncio.sleep(20)
-        new = templates.stats_embed(update_time=time.time(), boost_level=boost_lvl, total_channel=channel, offline="none", online="none")
+        new = templates.stats_embed(update_time=time.time(), boost_level=boost_lvl, total_channel=channel, member=members)
         await msg.edit(embed=new)
         await bot.change_presence(activity=discord.Game('UPDATE'), status=discord.Status.online)
         await asyncio.sleep(10)
