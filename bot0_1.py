@@ -17,25 +17,25 @@ bot.ticket_configs = {}
 
 @bot.event  # Startup Task
 async def on_ready():
-    async with aiofiles.open("DLTV/ticket", mode="a") as temp:
+    async with aiofiles.open("storage/ticket", mode="a") as temp:
         pass
 
-    async with aiofiles.open("DLTV/ticket", mode="r") as file:
+    async with aiofiles.open("storage/ticket", mode="r") as file:
         lines = await file.readlines()
         for line in lines:
             data = line.split(" ")
             bot.ticket_configs[int(data[0])] = [int(data[1]), int(data[2]), int(data[3])]
 
-    async with aiofiles.open("DLTV/reaction_roles", mode="a") as temp:  # create if not exists
+    async with aiofiles.open("storage/reaction_roles", mode="a") as temp:  # create if not exists
         pass
 
     for guild in bot.guilds:
-        async with aiofiles.open("DLTV/warnings", mode="a") as temp:
+        async with aiofiles.open("storage/warnings", mode="a") as temp:
             pass
         bot.warnings[guild.id] = {}
 
     for guild in bot.guilds:
-        async with aiofiles.open("DLTV/warnings", mode="r") as file:
+        async with aiofiles.open("storage/warnings", mode="r") as file:
             lines = await file.readlines()
 
             for line in lines:
@@ -51,7 +51,7 @@ async def on_ready():
                 except KeyError:
                     bot.warnings[guild.id][member_id] = [1, [(admin_id, reason)]]
 
-    async with aiofiles.open("DLTV/reaction_roles", mode="r") as file:  # open, read, append
+    async with aiofiles.open("storage/reaction_roles", mode="r") as file:  # open, read, append
         lines = await file.readlines()
         for line in lines:
             data = line.split(" ")
@@ -120,10 +120,10 @@ async def configure_ticket(ctx, msg: discord.Message = None, category: discord.C
 
     bot.ticket_configs[ctx.guild.id] = [msg.id, msg.channel.id, category.id]  # this resets the configuration
 
-    async with aiofiles.open("DLTV/ticket", mode="r") as file:
+    async with aiofiles.open("storage/ticket", mode="r") as file:
         data = await file.readlines()
 
-    async with aiofiles.open("DLTV/ticket", mode="w") as file:
+    async with aiofiles.open("storage/ticket", mode="w") as file:
         await file.write(f"{ctx.guild.id} {msg.id} {msg.channel.id} {category.id}\n")
 
         for line in data:
@@ -244,7 +244,7 @@ async def rr(ctx, role: discord.Role = None, msg: discord.Message = None, emoji=
         await msg.add_reaction(emoji)
         bot.reaction_roles.append((role.id, msg.id, str(emoji.encode("utf-8"))))
 
-        async with aiofiles.open("DLTV/reaction_roles", mode="a") as file:
+        async with aiofiles.open("storage/reaction_roles", mode="a") as file:
             emoji_utf = emoji.encode("utf-8")
             await file.write(f"{role.id} {msg.id} {emoji_utf}\n")
 
@@ -272,7 +272,7 @@ async def warn(ctx, member: discord.Member = None, *, reason=None):
         first_warning = True
         bot.warnings[ctx.guild.id][member.id] = [1, [(ctx.author.id, reason)]]
 
-    async with aiofiles.open("DLTV/warnings", mode="a") as file:
+    async with aiofiles.open("storage/warnings", mode="a") as file:
         await file.write(f"{member.id} {ctx.author.id} {reason}\n")
     await ctx.channel.purge(limit=1, check=checks.is_not_pinned)
     await ctx.send(embed=templates.warn_embed(update_time=time.time(), member=member, first_warning=first_warning,
@@ -332,6 +332,13 @@ async def ban(ctx, member : discord.Member, *, reason="Du Wurdest Gebannt!"):
 @commands.has_permissions(kick_members=True)
 async def info(ctx, member: discord.Member):
     await ctx.send(embed=templates.user_embed(ctx=ctx, member=member, update_time=time.time()))
+
+
+@bot.command()
+@commands.has_permissions(kick_members=True)
+async def verify(ctx):
+    await ctx.channel.purge(limit=1, check=checks.is_not_pinned)
+    await ctx.send(embed=templates.verify_embed(servername=io.get(cfg="Bot", var="server_name")))
 
 
 async def status_task():  # Display Discord Status
