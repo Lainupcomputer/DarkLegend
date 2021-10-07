@@ -8,7 +8,7 @@ def stats_embed(update_time, boost_level, total_channel, member):
                           colour=discord.Colour(0x35aa0a), url="http://darklegendstv.de/",
                           description="Server Stats: 🅳🅰🆁🅺🅻🅴🅶🅴🅽🅳🆂🆃🆅",
                           timestamp=datetime.datetime.utcfromtimestamp(update_time))
-    embed.set_thumbnail(url="https://server-dltv.de/dltv.png")
+    embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
     embed.add_field(name="Member:", value=f"{member}")
     embed.add_field(name="Channel:", value=f"{total_channel}")
     embed.add_field(name="Boost Level:", value=f"{boost_level}")
@@ -24,7 +24,7 @@ def warn_embed(update_time, member, count, first_warning):
                           colour=discord.Colour.red(),
                           description=f"{text}",
                           timestamp=datetime.datetime.utcfromtimestamp(update_time))
-    embed.set_thumbnail(url="https://server-dltv.de/dltv.png")
+    embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
     embed.add_field(name="Warnings:", value=f"{count}")
     return embed
 
@@ -34,7 +34,7 @@ def welcome_dm_embed(update_time):  # the welcome message the bot will send the 
                           colour=discord.Colour(0x35aa0a), url="http://darklegendstv.de/",
                           description="Willkommen, Bitte lese dir die Regeln durch.",
                           timestamp=datetime.datetime.utcfromtimestamp(update_time))
-    embed.set_thumbnail(url="https://server-dltv.de/dltv.png")
+    embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
     embed.add_field(name="1 Namensgebung",
                     value="Der Nickname sollte dem erwünschten Rufnamen entsprechen. Nicknames dürfen keine beleidigenden Inhalte enthalten.")
     embed.add_field(name="2 Avatar",
@@ -112,4 +112,21 @@ def user_embed(ctx, update_time, member):
     embed.set_thumbnail(url=member.avatar_url)
     embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Angefordert: {ctx.author.name}")
     return embed
+
+
+def verify_embed(servername):
+
+    embed = discord.Embed(title=f"Willkommen bei {servername}",
+                          description="**Die wesentlichen Informationen des Server:**\n Reagiere um Zugang zu den Bereichen zu erhalten.", color=discord.Colour.dark_purple())
+    embed.add_field(name="[💻] Computer", value="Computer-Hilfe, Beratung, Fehlerbehebung, Talk")
+
+    embed.add_field(name="[🎮] Gaming", value="League of legends, Minecraft, Warframe")
+
+    embed.add_field(name="[📕] Regeln", value="")
+    embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
+
+    return embed
+
+
+
 
