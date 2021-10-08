@@ -43,9 +43,22 @@ go to DLTV/config.json and edit following:
     
 
     
-# Command Usage:
-Setup Reaction role: (prefix)rr Role ID Message ID Emoji
+# Commands:
 
+configure_ticket MSG.Id category
+umfrage text
+hilfe
+münze
+logout
+clear * amt
+rr role.Id msg.Id emoji
+warn member.mention reason
+showwarn member.mention 
+report reason
+kick member.mention reason
+ban member.mention reason
+info member.mention
+verify 
 
 
 # Discord Setup:
