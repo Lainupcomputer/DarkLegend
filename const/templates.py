@@ -122,7 +122,7 @@ def verify_embed(servername):
 
     embed.add_field(name="[🎮] Gaming", value="League of legends, Minecraft, Warframe")
 
-    embed.add_field(name="[📕] Regeln", value="")
+    embed.add_field(name="[📕] Regeln", value="Die Regeln Findest du unter Regeln: ")
     embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
 
     return embed
