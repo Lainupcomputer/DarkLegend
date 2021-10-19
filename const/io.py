@@ -17,7 +17,7 @@ def get(cfg, var):  # Get Data from Json
     return data
 
 
-def edit(cfg, data, value):  # Edit Data
+def edit(cfg=None, data=None, value=None):  # Edit Data
     if cfg is None:
         cfg = "bot_config"
     config = read()
