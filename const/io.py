@@ -26,7 +26,7 @@ def get(cfg=None, var=None):  # Get Data from Json
 
 def edit(cfg=None, data=None, value=None):  # Edit Data
     if cfg is None:
-        cfg = "bot_config"
+        cfg = "Bot"
     config = read()
     config[str(cfg)][data] = value
     with open("config.json", "w") as f:
