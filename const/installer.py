@@ -7,6 +7,10 @@ def check():
         with open("installed", "r") as f:
             return True
     except:
+        f = open("config.json", "w+")
+        f.write("{\n\n}")
+        print("Created Blanc:")
+
         return False
 
 

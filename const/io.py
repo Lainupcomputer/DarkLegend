@@ -6,7 +6,7 @@ import json
 
 
 def read():  # Read Json File
-    with open("storage/config.json", "r") as f:
+    with open("config.json", "r") as f:
         config = json.load(f)
     return config
 
@@ -24,5 +24,5 @@ def edit(cfg=None, data=None, value=None):  # Edit Data
         cfg = "bot_config"
     config = read()
     config[str(cfg)][data] = value
-    with open("storage/config.json", "w") as f:
+    with open("config.json", "w") as f:
         json.dump(config, f)
