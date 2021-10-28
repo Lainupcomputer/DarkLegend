@@ -2,38 +2,69 @@ import discord
 import datetime
 
 
-def stats_embed(update_time, boost_level, total_channel, member):
 
-    embed = discord.Embed(title="Server Stats",
-                          colour=discord.Colour(0x35aa0a), url="http://darklegendstv.de/",
-                          description="Server Stats: 🅳🅰🆁🅺🅻🅴🅶🅴🅽🅳🆂🆃🆅",
+
+def report_embed(ctx, reason, update_time):
+    embed = discord.Embed(title="REPORT",
+                          colour=discord.Colour(0x35aa0a),
+                          description=f"{ctx.author.name} reported: {reason} Channel: {ctx.channel.name}",
                           timestamp=datetime.datetime.utcfromtimestamp(update_time))
-    embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
-    embed.add_field(name="Member:", value=f"{member}")
-    embed.add_field(name="Channel:", value=f"{total_channel}")
-    embed.add_field(name="Boost Level:", value=f"{boost_level}")
+
     return embed
 
 
-def warn_embed(update_time, member, count, first_warning):
-    if first_warning:
-        text = f"{member.mention} That's not cool you has been warned for the first time!"
-    else:
-        text = f"{member.mention} This is your {count} warning, rethink your behavior. "
-    embed = discord.Embed(title="User has been warned!",
-                          colour=discord.Colour.red(),
-                          description=f"{text}",
-                          timestamp=datetime.datetime.utcfromtimestamp(update_time))
-    embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
-    embed.add_field(name="Warnings:", value=f"{count}")
+def support_embed():
+    embed = discord.Embed(title="Support:",
+                          colour=discord.Colour(0x35aa0a),
+                          description="Du brauchst Hilfe oder willst einen Administrator sprechen ?\n"
+                                      "Reagiere um ein Gespräch mit einem Administrator zu beginnen.")
+
     return embed
 
 
-def welcome_dm_embed(update_time):  # the welcome message the bot will send the user via dm
-    embed = discord.Embed(title="Willkommen auf 🅳🅰🆁🅺🅻🅴🅶🅴🅽🅳🆂🆃🆅",
-                          colour=discord.Colour(0x35aa0a), url="http://darklegendstv.de/",
-                          description="Willkommen, Bitte lese dir die Regeln durch.",
+def umfrage_embed(update_time, topic):
+    embed = discord.Embed(title="Umfrage:",
+                          colour=discord.Colour(0x35aa0a),
+                          description=f"{topic}",
                           timestamp=datetime.datetime.utcfromtimestamp(update_time))
+    return embed
+
+
+
+def verify_embed(servername):
+
+    embed = discord.Embed(title=f"Willkommen bei {servername}",
+                          description="**Die wesentlichen Informationen des Server:**\n Reagiere um Zugang zu den Bereichen zu erhalten.", color=discord.Colour.dark_purple())
+    embed.add_field(name="[💻] Computer", value="Computer-Hilfe, Beratung, Fehlerbehebung, Talk")
+
+    embed.add_field(name="[🎮] Gaming", value="League of legends, Minecraft, Warframe, Valorant")
+
+    embed.add_field(name="[📕] Regeln", value="Die Regeln Findest du unter Regeln: ")
+    embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
+
+    return embed
+
+
+def game_role_embed(bot):
+    for i in bot.guilds:
+        mc = discord.utils.get(i.emojis, name="Minecraft")
+        league = discord.utils.get(i.emojis, name="League")
+        wf = discord.utils.get(i.emojis, name="Warframe")
+        valo = discord.utils.get(i.emojis, name="Valorant")
+    embed = discord.Embed(title=f"Du interessierst dich für Spiele ?",
+                          description="Reagiere um eine Spielegruppe zu abbonieren.", color=discord.Colour.dark_green())
+    embed.add_field(name=f"Minecraft: {mc} ", value="Betrete unseren Server.\n Tipps und Tricks.", inline=False)
+    embed.add_field(name=f"League of Legends: {league}", value="Finde Mitspieler.\n Sieh dir Patches an.", inline=False)
+    embed.add_field(name=f"Warframe: {wf}", value="Besuche den Clan der Fluffyuinikornz.\n Austausch von Builds.", inline=False)
+    embed.add_field(name=f"Valorant: {valo}", value="Was soll ich hier schreiben ?", inline=False)
+    embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
+
+    return embed
+
+
+def rule_embed():
+    embed = discord.Embed(title=f"Regeln",
+                          description="Regeln.", color=discord.Colour.dark_purple())
     embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
     embed.add_field(name="1 Namensgebung",
                     value="Der Nickname sollte dem erwünschten Rufnamen entsprechen. Nicknames dürfen keine beleidigenden Inhalte enthalten.")
@@ -55,78 +86,7 @@ def welcome_dm_embed(update_time):  # the welcome message the bot will send the 
                     value="Hiermit distanzieren wir uns ausdrücklich von allen Inhalten aller gelinkten Seiten \n"
                           "Wir übernehmen daher keinerlei Haftung in Hinsicht auf rechtsextreme, kinderpornografische oder sonstige kriminelle Inhalte")
 
-    return embed
-
-
-def welcome_channel_embed(user, update_time):  # the welcome message the bot will send in channel
-    user_creation = user.created_at
-    embed = discord.Embed(title=user.name, description=" Joined", colour=discord.Colour.green(),
-                          timestamp=datetime.datetime.utcfromtimestamp(update_time))
-    embed.set_thumbnail(url=user.avatar_url)
-    embed.add_field(name="User:", value=user.mention, inline=True)
-    embed.add_field(name="Account created: ", value=user_creation, inline=True)
-    embed.add_field(name="ID:", value=user.id, inline=True)
-    return embed
-
-
-def member_remove_embed(user, update_time):
-    embed = discord.Embed(title=f"{user.name} has Left.",
-                          colour=discord.Colour(0x35aa0a),
-                          description=f"The {user.name} is no longer a part of this Community.",
-                          timestamp=datetime.datetime.utcfromtimestamp(update_time))
-    return embed
-
-
-def report_embed(ctx, reason, update_time):
-    embed = discord.Embed(title="REPORT",
-                          colour=discord.Colour(0x35aa0a),
-                          description=f"{ctx.author.name} reported: {reason} Channel: {ctx.channel.name}",
-                          timestamp=datetime.datetime.utcfromtimestamp(update_time))
 
     return embed
-
-
-def support_embed(payload, update_time):
-    embed = discord.Embed(title="Support:",
-                          colour=discord.Colour(0x35aa0a),
-                          description=f"{payload.member.mention} requested Support.",
-                          timestamp=datetime.datetime.utcfromtimestamp(update_time))
-    return embed
-
-
-def umfrage_embed(update_time, topic):
-    embed = discord.Embed(title="Umfrage:",
-                          colour=discord.Colour(0x35aa0a),
-                          description=f"{topic}",
-                          timestamp=datetime.datetime.utcfromtimestamp(update_time))
-    return embed
-
-
-def user_embed(ctx, update_time, member):
-    embed = discord.Embed(title=member.name, description=member.mention, color=discord.Colour.green(),
-                          timestamp=datetime.datetime.utcfromtimestamp(update_time))
-    embed.add_field(name="ID", value=member.id, inline=True)
-    embed.add_field(name="Beigetreten", value=member.joined_at, inline=True)
-    embed.add_field(name="Höchste Rolle", value=member.top_role, inline=True)
-    embed.add_field(name="Rollen", value=member.roles, inline=True)
-    embed.set_thumbnail(url=member.avatar_url)
-    embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Angefordert: {ctx.author.name}")
-    return embed
-
-
-def verify_embed(servername):
-
-    embed = discord.Embed(title=f"Willkommen bei {servername}",
-                          description="**Die wesentlichen Informationen des Server:**\n Reagiere um Zugang zu den Bereichen zu erhalten.", color=discord.Colour.dark_purple())
-    embed.add_field(name="[💻] Computer", value="Computer-Hilfe, Beratung, Fehlerbehebung, Talk")
-
-    embed.add_field(name="[🎮] Gaming", value="League of legends, Minecraft, Warframe")
-
-    embed.add_field(name="[📕] Regeln", value="Die Regeln Findest du unter Regeln: ")
-    embed.set_thumbnail(url="http://server-dltv.de/dltv.png")
-
-    return embed
-
-
 
 
