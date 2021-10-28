@@ -1,6 +1,6 @@
 ﻿import discord
 from discord.ext import commands
-from const import io, help, checks, templates, installer
+from const import io, help, checks, templates, installer, task
 import asyncio
 import time
 from embed import system, user_info, stats, join_leave
@@ -211,25 +211,32 @@ if installed:
             await ctx.send(f"{emoji}")
 
     async def status_task():  # Display Discord Status
-        await bot.get_channel(io.get(cfg="Channel", var="stats_channel")).purge()
         embed = discord.Embed(title="Server Stats",
                               colour=discord.Colour(0x35aa0a),
                               description="Server Stats: LOADING")
+        try:
+            await bot.get_channel(io.get(cfg="Channel", var="stats_channel")).purge()
+        except AttributeError:
+            pass
 
-        msg = await bot.get_channel(io.get(cfg="Channel", var="stats_channel")).send(embed=embed)
-
-        while True:
-            guild = bot.get_guild(io.get(cfg="Bot", var="guild"))
-            boost_lvl = guild.premium_tier
-            channel = len(guild.text_channels) + len(guild.voice_channels)
-            members = len(guild.members)
-            await bot.change_presence(activity=discord.Game('OK'), status=discord.Status.online)
-            await asyncio.sleep(20)
-            new = stats.stats_embed(update_time=time.time(), boost_level=boost_lvl, total_channel=channel,
+        try:
+            msg = await bot.get_channel(io.get(cfg="Channel", var="stats_channel")).send(embed=embed)
+            while True:
+                guild = bot.get_guild(io.get(cfg="Bot", var="guild"))
+                boost_lvl = guild.premium_tier
+                channel = len(guild.text_channels) + len(guild.voice_channels)
+                members = len(guild.members)
+                new = stats.stats_embed(update_time=time.time(), boost_level=boost_lvl, total_channel=channel,
                                         member=members)
-            await msg.edit(embed=new)
-            await bot.change_presence(activity=discord.Game('UPDATE'), status=discord.Status.online)
+                await msg.edit(embed=new)
+
+        except AttributeError:
+            pass
+        while True:
             await asyncio.sleep(10)
+            await bot.change_presence(activity=discord.Game('UPDATE'), status=discord.Status.online)
+            await asyncio.sleep(20)
+            await bot.change_presence(activity=discord.Game('OK'), status=discord.Status.online)
 
 
     bot.run(io.get(var="token"))
