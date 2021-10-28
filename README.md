@@ -4,7 +4,7 @@
 
  Hi! I'm The all in one open Source Discord Bot **Dark Legend**.
 Feel free to join our discord if you got trouble setting up your own Bot.
-[🅳🅰🆁🅺🅻🅴🅶🅴🅽🅳🆂🆃🆅](https://discord.gg/n3T3GrrQKg)
+[🆃🅴🅲🅷🅲🆁🅴🆆](https://discord.gg/3PCCPanvSm)
 
 # Features:
 ### Welcome message 
@@ -40,12 +40,31 @@ go to DLTV/config.json and edit following:
 - replace "stats_channel" with the Id of the Channel where you want the Stats message to be send. 
 - replace "report_channel" with the Id of the Channel where you want the Report message to be send. 
 
-    
-
-    
-# Command Usage:
-Setup Reaction role: (prefix)rr Role ID Message ID Emoji
-
-
 
 # Discord Setup:
+ Create a category for support:\
+ Channels you have to create: 
++ join_channel
++ stats_channel
++ log_channel
++ report_channel
++ support_channel\
+
+You can use this [template]([https://www.google.com/](template)).\
+This template contains no roles or settings. 
+
+
+# Commands:
+List of commands the bot can proceed: 
+- poll * topic  [create a poll]
+- logout  [logout]
+- clear * amount(default=1)  [delete message]
+- create_reaction * role * message(id) + emoji [create reaction role]
+- configure_ticket * message(id) * category(id) [create reaction for support]
+- warn * user * reason [warn user]
+- warn_show * user [show warning for user]
+- report * reason [report to an admin]
+- info * user [user info]
+- ban * user * reason [ban user with reason]
+- kick * user * reason [kick user with reason]
+- emded * emded(gamerole, verify, rules, support) [create embed in channel]
