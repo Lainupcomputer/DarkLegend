@@ -1,45 +1,46 @@
-import time
 from const import io
 
 
 def check():
     try:
-        with open("installed", "r") as f:
+        with open("config.json", "r") as f:
             return True
-    except:
+    except FileNotFoundError:
         f = open("config.json", "w+")
         f.write("{\n\n}")
-        print("Created Blanc:")
-
+        print("[-] config not found:")
+        print("[/] creating data....\n")
+        print("[!] RESTART")
         return False
 
 
-def inst():
-    f = open("installed", "w+")
-    f.write(f"{time.time()}\n")
-
-
 def check_installed():
+    print("[*] Darklegend Alpha V2:\n")
+    print("[*] Checking Installation:")
     installed = check()
-    print("Welcome to Darklegend\n")
-    print("Checking Installation:\n")
-    t = io.get(cfg="Bot", var="token")
-    if len(t) >= 5:
-        print("Token:Valid")
-        if installed:
-            inst()
-            print("Bot starting up")
-            return True
-        else:
-            print("This seems to be the first start.")
-            print("Creating Data...")
-            inst()
-            print("Start me again")
+    if installed:
+        print("[?] checking token:")
+        try:
+            token = io.get(var="token")
+            if len(token) >= 10:
+                print("[+] token: valid\n")
+                print("[+] bot starting up")
+                return True
 
-    else:
-        print("Token:Invalid")
-        print("edit configfile: \"storage/config.json\"")
-        print("Get Help: https://github.com/Lainupcomputer/DarkLegend")
+        except KeyError:
+            print("[!] token:invalid")
+            print("[*] edit configfile: \"config.json\"")
+            print("[*] get help: https://github.com/Lainupcomputer/DarkLegend")
+            return False
+
+
+
+
+
+
+
+
+
 
 
 
