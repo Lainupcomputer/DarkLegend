@@ -1,6 +1,6 @@
 ﻿import discord
 from discord.ext import commands
-from const import io, help, checks, templates, musikbot, installer
+from const import io, help, checks, templates, installer
 import asyncio
 import time
 from embed import system, user_info, stats, join_leave
@@ -202,63 +202,6 @@ if installed:
             await ctx.send(embed=templates.rule_embed())
         if arg == "support":
             await ctx.send(embed=templates.support_embed())
-
-
-    @bot.command()
-    async def dj(ctx, arg=None, link=None):
-        if arg is None:
-            buttons = ["📑", "⏹", "⏯", "⏭", "🗑"]
-            await ctx.channel.purge(limit=1)
-            init_dl = 0
-            msg = await ctx.send(embed=musikbot.dj_embed(update_time=time.time()))
-            for button in buttons:
-                await msg.add_reaction(button)
-            while True:
-                try:
-                    reaction, user = await bot.wait_for("reaction_add",
-                                                        check=lambda reaction,
-                                                                     user: user == ctx.author and reaction.emoji in buttons,
-                                                        timeout=60.0)
-                except asyncio.TimeoutError:
-                    pass
-
-                else:
-
-                    if reaction.emoji == "📑":
-                        embed = await musikbot.que_status(update_time=time.time())
-                        await msg.edit(embed=embed)
-                    elif reaction.emoji == "⏹":
-                        musikbot.stop(ctx)
-                    elif reaction.emoji == "⏯":
-                        musikbot.play_pause(ctx)
-                    elif reaction.emoji == "⏭":
-                        musikbot.skip()
-                        await msg.edit(embed=embed)
-                    elif reaction.emoji == "🗑":
-                        init_dl = 1
-
-                    for button in buttons:
-                        await msg.remove_reaction(button, ctx.author)
-                        # await msg.edit(embed=templates.dj_embed(update_time=time.time()))
-
-                    if init_dl == 1:
-                        await ctx.channel.purge(limit=1)
-        if arg == "join":  # join channel
-            await ctx.channel.purge(limit=1)
-            await musikbot.join(ctx)
-        if arg == "add":  # add to playlist
-
-            if link is not None:
-                await musikbot.add_que(ctx, link=link)
-            else:
-                await ctx.send("enter a valid link")
-        if arg == "list":
-            await ctx.channel.purge(limit=1)
-            await ctx.send(embed=await musikbot.que_status(update_time=time.time()))
-        if arg == "delete":  # clear playlist
-            await ctx.channel.purge(limit=1)
-            response = await musikbot.delete()
-            await ctx.send(f"{response}")
 
 
     @bot.command()
