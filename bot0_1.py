@@ -1,6 +1,6 @@
 ﻿import discord
 from discord.ext import commands
-from const import io, help, checks, templates, installer, task
+from const import io, help, checks, templates, installer
 import asyncio
 import time
 from embed import system, user_info, stats, join_leave
