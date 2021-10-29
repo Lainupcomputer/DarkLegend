@@ -56,7 +56,7 @@ if installed:
 
     @bot.event
     async def on_member_remove(member):
-        await bot.get_channel(io.get(cfg="Channel",var="join_channel")).send(embed=join_leave.member_remove_embed(
+        await bot.get_channel(io.get(cfg="Channel", var="join_channel")).send(embed=join_leave.member_remove_embed(
             user=member, update_time=time.time()))
 
 
